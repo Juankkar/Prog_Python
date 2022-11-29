@@ -17,7 +17,16 @@ Esta actividad evaluada consiste en una serie de ejercicios que debe responder d
 ## Librerías a usar:
 
 ```{r}
-library(tidyverse)
+# Paquetes necesarios
+packages <- c("tidyverse", "seqinr")
+
+# Instalamos los paquetes 
+installed_packages <- packages %in% rownames(installed.packages())
+if (any(installed_packages == FALSE)){
+  install.packages(packages[!installed_packages])
+}
+# Cargar las librarías
+invisible(lapply(packages, library, character.only = TRUE))
 ```
 # Parte 1 (evaluacionR.csv)
 
@@ -26,15 +35,22 @@ library(tidyverse)
 Descargar el archivo evaluacionR.csv e importar dicha información a un dataframe identificado como **df** usando el url que se indica en el trozo de código.
 
 ```{r} 
-
 url1="https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1"
+fichero="../data_raw/df.csv"
+# # Windows
+# # download.file(url,"../data_raw/df.csv", method="wininet")
+# # Linux
+if(!file.exists(fichero)){
+  download.file(url1,fichero, method="wget")
+} else{
+  print("El fichero ya existía")
+}
+```
 
-# Windows
-# download.file(url,"../data_raw/df.csv", method="wininet")
-# Linux
-download.file(url1,"../data_raw/df.csv", method="wget")
 
-df <- read.csv("../data_raw/df.csv")
+```{r} 
+# Datos
+df <- read.csv(file = "../data_raw/df.csv")
 
 ```
 
@@ -95,7 +111,7 @@ df %>%
       theme(
         plot.title = element_text(face = "bold", size = 14, hjust = .5),
         plot.subtitle = element_text(face = "bold", size = 14, hjust = .5),
-        axis.line=element_line(size = 1),
+        # axis.line=element_line(size = 1),
         axis.ticks = element_line(size = 1),
         axis.title = element_text(face = "bold", size = 12),
         axis.text = element_text(face = "bold", size = 11)
@@ -107,24 +123,24 @@ df %>%
  
 A partir de los datos de **df**, mostrar mediante un gráfico de puntos la relación entre TPM y nTPM para los registros en donde la variable Tissue sea igual a "angular gyrus (white matter)" o igual a "angular gyrus". Colorear de forma distinta dependiendo del tipo de Tissue.
 
-    ```{r warnings=FALSE}
+```{r warnings=FALSE}
+
+## Esqueleto principal de los siguienets gráifcos
 plot_6_y_5 <- df %>% 
-      filter(Tissue == "angular gyrus (white matter)" | 
-               Tissue == "angular gyrus") %>% 
-      ggplot(aes(TPM, nTPM, fill=Tissue)) +
-      geom_point(pch=21, color="black", size=1.5) +
-      geom_smooth(method = "lm", aes(color=Tissue), 
-                  se=FALSE, show.legend = FALSE) +
- labs(
-        title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
-        subtitle = "Autor: Juan Carlos García Estupiñán",
-        x="TPM",
-        y="nTPM"
-      ) +
-  scale_fill_manual(name="Tipo tejido:",
-                     values=c("red", "blue")) +
+  filter(Tissue == "angular gyrus (white matter)" | 
+         Tissue == "angular gyrus") %>%
+  mutate(Tissue=factor(Tissue,
+                       levels = c("angular gyrus",
+                                  "angular gyrus (white matter)"),
+                       labels = c("Angular gyrus",
+                                  "Angular gyrus\n(white matter)"))) %>%
+  ggplot(aes(TPM, nTPM, fill=Tissue)) +
+  geom_smooth(method = "lm", aes(color=Tissue), 
+              se=FALSE, show.legend = FALSE) +
+  scale_fill_manual(name="Tipo de\ntejido:",
+                    values=c("red", "blue")) +
   scale_color_manual(name=NULL,
-                     values=c("red", "blue")) +
+                         values=c("red", "blue")) +
   theme_classic() +
   theme(
     plot.title = element_text(face = "bold", size = 14, hjust = .5),
@@ -133,13 +149,21 @@ plot_6_y_5 <- df %>%
     axis.ticks = element_line(size = 1),
     axis.title = element_text(face = "bold", size = 12),
     axis.text = element_text(face = "bold", size = 11),
-    legend.title = element_text(size = 10),
-    legend.text = element_text(size = 10),
+    legend.title = element_text(face="bold",size = 10,hjust = .5),
+    legend.text = element_text(size = 10, hjust = .5),
     legend.position = "top",
     legend.background = element_rect(color = "black", size = .75)
-    )
+        )
 
-plot_6_y_5
+## Gráfico de la actividad 5
+plot_6_y_5 +
+  geom_point(pch=21, color="black", size=1.5) +
+  labs(
+        title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
+        subtitle = "Autor: Juan Carlos García Estupiñán",
+        x="TPM",
+        y="nTPM"
+      ) 
 ```
 
 
@@ -148,9 +172,20 @@ plot_6_y_5
 Mostrar los mismos datos de la pregunta 6 usando facet_grid para separar la información de los dos tejidos en dos gráficos colocados uno al lado del otro.
 
 ```{r}
-
 plot_6_y_5 +
-  facet_grid(~Tissue) 
+  geom_point(pch=21, color="black", size=1.5,
+             show.legend = FALSE) +
+  facet_grid(~Tissue) +
+  labs(
+        title = "Actividad 6 Programación R, Máster de Bioinformática VIU",
+        subtitle = "Autor: Juan Carlos García Estupiñán",
+        x="TPM",
+        y="nTPM"
+      ) +
+  theme(
+    strip.background = element_blank(),
+    strip.text = element_text(color = "black", size = 12, face = "bold")
+  )
 
 ```
 
@@ -162,16 +197,28 @@ plot_6_y_5 +
 Descargar el archivo ncrna_NONCODE[v3.0].fasta e importar los datos usando el paquete seqinr visto en las  prácticas de las últimas sesiones. Recuerde que el archivo se encuetra comprimido. Almacenar los datos en el objeto **ncrna**.
 
 ```{r warning=FALSE}
-url2="http://noncode.org/datadownload/ncrna_NONCODE[v3.0].fasta.tar.gz"
+# url2="http://noncode.org/datadownload/ncrna_NONCODE[v3.0].fasta.tar.gz"
 
-# Windows
-# download.file(url,"../data_raw/ncrna.csv", method="wininet")
-# Linux
-download.file(url2,"../data_raw/ncrna.csv", method="wget")
-
-ncrna <- read.csv("../data_raw/ncrna.csv")
+if (!file.exists("../data_raw/ncrna_NONCODE[v3.0].fasta")){
+  url="http://noncode.org/datadownload/ncrna_NONCODE[v3.0].fasta.tar.gz"
+  temp=tempfile()
+  download.file(url,temp,method = "auto", quiet = TRUE)
+  untar(temp,list=TRUE)
+  untar(temp,exdir="../data_raw")
+  unlink(temp)
+  rm(temp,url)
+} else{
+  print("La base de datos ya estaba descargada")
+}
 
 ```
+
+```{r warning=FALSE}
+if (!exists("ncrna")){
+  ncrna <- read.fasta(file = "../rawdata/ncrna_NONCODE[v3.0].fasta")
+}
+```
+
 
 ## Pregunta 9.
 
@@ -179,7 +226,7 @@ Revisar las funciones disponibles del paquete seqinr. Indicar qué función se p
 
 ```{r}
 
-
+library(help="seqinr")
 
 ```
 
@@ -189,6 +236,8 @@ Extraer en un objeto **secuencia** todas las secuencias del objeto **ncrna** usa
 
 ```{r}
 
+secuencia <- getSequence(ncrna)
+typeof(secuencia) # Se trata de una lista
 
 ```
 
@@ -198,8 +247,6 @@ Extraer  las secuencias que empiezan con "acct". ¿Cuántas secuencias cumplen c
 
 ```{r}
 
-
-
 ```
 
 
@@ -208,8 +255,6 @@ Extraer  las secuencias que empiezan con "acct". ¿Cuántas secuencias cumplen c
 Extraer las secuencias que terminan con "tttttt". ¿Cuántas secuencias cumplen con la condición?
 
 ```{r}
-
-
 
 ```
 
