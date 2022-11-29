@@ -26,11 +26,11 @@ Descargar el archivo evaluacionR.csv e importar dicha información a un datafram
 url="https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1"
 
 # Windows
-# download.file(url,"df.csv", method="wininet")
-# Linux
-# download.file(url,"df.csv", method="wget")
+# download.file(url,"../data_raw/df.csv", method="wininet")
+Linux
+download.file(url,"../data_raw/df.csv", method="wget")
 
-df <- read.csv("df.csv")
+df <- read.csv("../data_raw/df.csv")
 
 ```
 
@@ -102,14 +102,16 @@ A partir de los datos de **df**, mostrar mediante un gráfico de puntos la relac
     ```{r}
 plot_6_y_5 <- df %>% 
       filter(Tissue == "angular gyrus (white matter)" | Tissue == "angular gyrus") %>% 
-      ggplot(aes(TPM, nTPM, color=Tissue)) +
-      geom_point() +
+      ggplot(aes(TPM, nTPM, fill=Tissue)) +
+      geom_point(pch=21, color="black") +
  labs(
         title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
         subtitle = "Autor: Juan Carlos García Estupiñán",
         x="TPM",
         y="nTPM"
       ) +
+  scale_y_continuous(name="Tipo tejido:",
+                     values=c("red", "blue"))
       theme_classic() +
       theme(
         plot.title = element_text(face = "bold", size = 14, hjust = .5),
