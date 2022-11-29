@@ -14,7 +14,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Esta actividad evaluada consiste en una serie de ejercicios que debe responder dentro de los *chunks* o trozos de código disponibles después de cada pregunta. Recuerda incluir la carga de los paquetes necesarios para la ejecución del código.
 
+## Librerías a usar:
 
+```{r}
+library(tidyverse)
+```
 # Parte 1 (evaluacionR.csv)
 
 ## Pregunta 1.
@@ -28,7 +32,7 @@ url1="https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1"
 # Windows
 # download.file(url,"../data_raw/df.csv", method="wininet")
 # Linux
-download.file(url,"../data_raw/df.csv", method="wget")
+download.file(url1,"../data_raw/df.csv", method="wget")
 
 df <- read.csv("../data_raw/df.csv")
 
@@ -80,6 +84,7 @@ Mostrar mediante un gráfico de puntos la relación entre TPM y nTPM usando el d
 df %>%
       ggplot(aes(TPM, nTPM)) +
       geom_point(size=1.5) +
+      # geom_smooth(method = "lm") +
       labs(
         title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
         subtitle = "Autor: Juan Carlos García Estupiñán",
@@ -90,7 +95,10 @@ df %>%
       theme(
         plot.title = element_text(face = "bold", size = 14, hjust = .5),
         plot.subtitle = element_text(face = "bold", size = 14, hjust = .5),
-        axis.title = element_text(face = "bold", size = 12)
+        axis.line=element_line(size = 1),
+        axis.ticks = element_line(size = 1),
+        axis.title = element_text(face = "bold", size = 12),
+        axis.text = element_text(face = "bold", size = 11)
       )
     ```
 
@@ -99,35 +107,40 @@ df %>%
  
 A partir de los datos de **df**, mostrar mediante un gráfico de puntos la relación entre TPM y nTPM para los registros en donde la variable Tissue sea igual a "angular gyrus (white matter)" o igual a "angular gyrus". Colorear de forma distinta dependiendo del tipo de Tissue.
 
-    ```{r}
+    ```{r warnings=FALSE}
 plot_6_y_5 <- df %>% 
-      filter(Tissue == "angular gyrus (white matter)" | Tissue == "angular gyrus") %>% 
+      filter(Tissue == "angular gyrus (white matter)" | 
+               Tissue == "angular gyrus") %>% 
       ggplot(aes(TPM, nTPM, fill=Tissue)) +
       geom_point(pch=21, color="black", size=1.5) +
+      geom_smooth(method = "lm", aes(color=Tissue), 
+                  se=FALSE, show.legend = FALSE) +
  labs(
         title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
         subtitle = "Autor: Juan Carlos García Estupiñán",
         x="TPM",
         y="nTPM"
       ) +
-  scale_y_continuous(name="Tipo tejido:",
-                     values=c("red", "blue"))
-      theme_classic() +
-      theme(
-        plot.title = element_text(face = "bold", size = 14, hjust = .5),
-        plot.subtitle = element_text(face = "bold", size = 14, hjust = .5),
-        axis.line=element_line(size = 1),
-        axis.ticks = element_line(size = 1),
-        axis.title = element_text(face = "bold", size = 12),
-        axis.text = element_text(face = "bold", size = 11),
-        legend.title = element_text(size = 10),
-        legend.text = element_text(size = 10),
-        legend.position = "top",
-        legend.background = element_rect(color = "black", size = .75)
-      )
+  scale_fill_manual(name="Tipo tejido:",
+                     values=c("red", "blue")) +
+  scale_color_manual(name=NULL,
+                     values=c("red", "blue")) +
+  theme_classic() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14, hjust = .5),
+    plot.subtitle = element_text(face = "bold", size = 14, hjust = .5),
+    axis.line=element_line(size = 1),
+    axis.ticks = element_line(size = 1),
+    axis.title = element_text(face = "bold", size = 12),
+    axis.text = element_text(face = "bold", size = 11),
+    legend.title = element_text(size = 10),
+    legend.text = element_text(size = 10),
+    legend.position = "top",
+    legend.background = element_rect(color = "black", size = .75)
+    )
 
 plot_6_y_5
-    ```
+```
 
 
 ## Pregunta 7.
@@ -148,15 +161,15 @@ plot_6_y_5 +
 
 Descargar el archivo ncrna_NONCODE[v3.0].fasta e importar los datos usando el paquete seqinr visto en las  prácticas de las últimas sesiones. Recuerde que el archivo se encuetra comprimido. Almacenar los datos en el objeto **ncrna**.
 
-```{r}
+```{r warning=FALSE}
 url2="http://noncode.org/datadownload/ncrna_NONCODE[v3.0].fasta.tar.gz"
 
 # Windows
 # download.file(url,"../data_raw/ncrna.csv", method="wininet")
 # Linux
-download.file(url,"../data_raw/ncrna.csv", method="wget")
+download.file(url2,"../data_raw/ncrna.csv", method="wget")
 
-df <- read.csv("../data_raw/df.csv")
+ncrna <- read.csv("../data_raw/ncrna.csv")
 
 ```
 
