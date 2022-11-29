@@ -45,7 +45,8 @@ if(sistema_operativo == "linux" && !file.exists(fichero)){
   download.file(url1,fichero, method="wget")
   print("Has descargado los datos para Linux")
 } else if(sistema_operativo == "windows" && !file.exists(fichero)){
-  download.file(url1,fichero, method="wininet")
+  ### No funciona muy bien en Windows esta condicion por las rutas
+  download.file(url1,fichero, method="wininet") 
   print("Has descargado los datos para Windows")
 } else{
   print("Los datos ya estaban descargados")
@@ -220,7 +221,7 @@ if (!file.exists("../data_raw/ncrna_NONCODE[v3.0].fasta")){
 
 ```{r warning=FALSE}
 if (!exists("ncrna")){
-  ncrna <- read.fasta(file = "../rawdata/ncrna_NONCODE[v3.0].fasta")
+  ncrna <- read.fasta(file = "../data_raw/ncrna_NONCODE[v3.0].fasta")
 }
 ```
 
@@ -251,6 +252,8 @@ typeof(secuencia) # Se trata de una lista
 Extraer  las secuencias que empiezan con "acct". ¿Cuántas secuencias cumplen con la condición?
 
 ```{r}
+
+
 
 ```
 
