@@ -35,16 +35,18 @@ invisible(lapply(packages, library, character.only = TRUE))
 Descargar el archivo evaluacionR.csv e importar dicha información a un dataframe identificado como **df** usando el url que se indica en el trozo de código.
 
 ```{r} 
-url1="https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1"
-fichero="../data_raw/df.csv"
-sistema_operativo="windows" # Poner si se encuenctra en windows o linux
+url1 <- "https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1"
+fichero <- "../data_raw/df.csv"
+sistema_operativo <- "linux" # Poner si se encuenctra en windows o linux
 # # Windows
 # # download.file(url,"../data_raw/df.csv", method="wininet")
 # # Linux
-if(sistema_operativo == "linux" & !file.exists(fichero)){
+if(sistema_operativo == "linux" && !file.exists(fichero)){
   download.file(url1,fichero, method="wget")
-} else if(sistema_operativo == "windows" & !file.exists(fichero)){
-  download.file(url1,fichero, method="wininet")  
+  print("Has descargado los datos para Linux")
+} else if(sistema_operativo == "windows" && !file.exists(fichero)){
+  download.file(url1,fichero, method="wininet")
+  print("Has descargado los datos para Windows")
 } else{
   print("Los datos ya estaban descargados")
 }
@@ -85,21 +87,21 @@ vector_respuesta
  
 Agrupar el dataframe **df** por la variable **Tissue** y agregar columnas con la media de TPM, el valor máximo de TPM y el valor mínimo de TPM para cada tipo de Tissue. Almacenar el resultado en **df1**.
 
-    ```{r}
+```{r}
 df1 <- df %>%
       group_by(Tissue) %>%
       summarise(maximo=max(TPM),
                 minimo=min(TPM))
 df1 %>% head()
 
-    ```
+```
 
 
 ## Pregunta 5.
  
 Mostrar mediante un gráfico de puntos la relación entre TPM y nTPM usando el dataframe **df**.
 
-    ```{r}
+```{r}
 df %>%
       ggplot(aes(TPM, nTPM)) +
       geom_point(size=1.5) +
@@ -119,7 +121,7 @@ df %>%
         axis.title = element_text(face = "bold", size = 12),
         axis.text = element_text(face = "bold", size = 11)
       )
-    ```
+```
 
 
 ## Pregunta 6.
