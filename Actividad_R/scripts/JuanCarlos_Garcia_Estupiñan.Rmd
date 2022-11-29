@@ -37,13 +37,16 @@ Descargar el archivo evaluacionR.csv e importar dicha información a un datafram
 ```{r} 
 url1="https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1"
 fichero="../data_raw/df.csv"
+sistema_operativo="windows" # Poner si se encuenctra en windows o linux
 # # Windows
 # # download.file(url,"../data_raw/df.csv", method="wininet")
 # # Linux
-if(!file.exists(fichero)){
+if(sistema_operativo == "linux" & !file.exists(fichero)){
   download.file(url1,fichero, method="wget")
+} else if(sistema_operativo == "windows" & !file.exists(fichero)){
+  download.file(url1,fichero, method="wininet")  
 } else{
-  print("El fichero ya existía")
+  print("Los datos ya estaban descargados")
 }
 ```
 
