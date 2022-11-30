@@ -181,7 +181,7 @@ Mostrar los mismos datos de la pregunta 6 usando facet_grid para separar la info
 plot_6_y_5 +
   geom_point(pch=21, color="black", size=1.5,
              show.legend = FALSE) +
-  facet_grid(~Tissue) +
+  facet_grid(~Tissue, scales = "free") +
   labs(
         title = "Actividad 6 Programación R, Máster de Bioinformática VIU",
         subtitle = "Autor: Juan Carlos García Estupiñán",
