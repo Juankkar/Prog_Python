@@ -252,18 +252,34 @@ typeof(secuencia) # Se trata de una lista
 Extraer  las secuencias que empiezan con "acct". ¿Cuántas secuencias cumplen con la condición?
 
 ```{r}
+### Con la función system() (base) podemos correr comandos de bash en un script de R
+### comandos que son muy útiles para estos trabajos.
 
+## Creamos una variable para filtrar las frecuencias que empiezan por ACCT
+x <- 'grep -v ">" ../data_raw/ncrna_NONCODE[v3.0].fasta | grep "^ACCT" > ../data_raw/empieza_acct.txt'
+system(x)
 
+## Contamos el número de secuencias que presentan esta subsecuencia al principio
+y <- 'wc -l ../data_raw/empieza_acct.txt'
+system(y)
 
 ```
-
 
 ## Pregunta 12.
 
 Extraer las secuencias que terminan con "tttttt". ¿Cuántas secuencias cumplen con la condición?
 
 ```{r}
+### Con la función system() (base) podemos correr comandos de bash en un script de R
+### comandos que son muy útiles para estos trabajos.
 
+## Creamos una variable para filtrar las frecuencias que terminan por TTTTTT
+x1 <- 'grep -v ">" ../data_raw/ncrna_NONCODE[v3.0].fasta | grep "TTTTTT$" > ../data_raw/empieza_acct.txt'
+system(x1)
+
+## Contamos el número de secuencias que presentan esta subsecuencia al principio
+y1 <- 'wc -l ../data_raw/empieza_acct.txt'
+system(y1)
 ```
 
 
