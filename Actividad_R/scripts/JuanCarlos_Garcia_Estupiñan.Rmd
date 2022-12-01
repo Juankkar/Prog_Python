@@ -18,7 +18,7 @@ Esta actividad evaluada consiste en una serie de ejercicios que debe responder d
 
 ```{r}
 # Paquetes necesarios
-packages <- c("tidyverse", "seqinr")
+packages <- c("tidyverse", "seqinr", "glue")
 
 # Instalamos los paquetes 
 installed_packages <- packages %in% rownames(installed.packages())
@@ -203,10 +203,11 @@ plot_6_y_5 +
 Descargar el archivo ncrna_NONCODE[v3.0].fasta e importar los datos usando el paquete seqinr visto en las  prácticas de las últimas sesiones. Recuerde que el archivo se encuetra comprimido. Almacenar los datos en el objeto **ncrna**.
 
 ```{r warning=FALSE}
-# url2="http://noncode.org/datadownload/ncrna_NONCODE[v3.0].fasta.tar.gz"
+
+url2 <- "http://noncode.org/datadownload/ncrna_NONCODE[v3.0].fasta.tar.gz"
 
 if (!file.exists("../data_raw/ncrna_NONCODE[v3.0].fasta")){
-  url="http://noncode.org/datadownload/ncrna_NONCODE[v3.0].fasta.tar.gz"
+  url=url2      
   temp=tempfile()
   download.file(url,temp,method = "auto", quiet = TRUE)
   untar(temp,list=TRUE)
@@ -216,6 +217,7 @@ if (!file.exists("../data_raw/ncrna_NONCODE[v3.0].fasta")){
 } else{
   print("La base de datos ya estaba descargada")
 }
+
 
 ```
 
@@ -252,11 +254,16 @@ typeof(secuencia) # Se trata de una lista
 Extraer  las secuencias que empiezan con "acct". ¿Cuántas secuencias cumplen con la condición?
 
 ```{r}
-### Con la función system() (base) podemos correr comandos de bash en un script de R
-### comandos que son muy útiles para estos trabajos.
+### Con la función system() (base) podemos correr comandos de la línea de comandos en un script de R
+### los cuales son muy útiles para este trabajo. 
+### Por otro lado glue es un paquete muy útil que he encontrado y uso mucho, permite 
+### añadir a una string otra string mediante {}
+
+## Necesitamos pasarlo a mayúscula
+empieza_acct <- toupper("acct") 
 
 ## Creamos una variable para filtrar las frecuencias que empiezan por ACCT
-x <- 'grep -v ">" ../data_raw/ncrna_NONCODE[v3.0].fasta | grep "^ACCT" > ../data_raw/empieza_acct.txt'
+x <- glue('grep -v ">" ../data_raw/ncrna_NONCODE[v3.0].fasta | grep "^{empieza_acct}" > ../data_raw/empieza_acct.txt')
 system(x)
 
 ## Contamos el número de secuencias que presentan esta subsecuencia al principio
@@ -270,11 +277,11 @@ system(y)
 Extraer las secuencias que terminan con "tttttt". ¿Cuántas secuencias cumplen con la condición?
 
 ```{r}
-### Con la función system() (base) podemos correr comandos de bash en un script de R
-### comandos que son muy útiles para estos trabajos.
+## Necesitamos pasarlo a mayúscula
+termina_tttttt <- toupper("tttttt")
 
 ## Creamos una variable para filtrar las frecuencias que terminan por TTTTTT
-x1 <- 'grep -v ">" ../data_raw/ncrna_NONCODE[v3.0].fasta | grep "TTTTTT$" > ../data_raw/empieza_acct.txt'
+x1 <- glue('grep -v ">" ../data_raw/ncrna_NONCODE[v3.0].fasta | grep "{termina_tttttt}$" > ../data_raw/termina_tttttt.txt')
 system(x1)
 
 ## Contamos el número de secuencias que presentan esta subsecuencia al principio
