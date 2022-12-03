@@ -37,7 +37,7 @@ Descargar el archivo evaluacionR.csv e importar dicha información a un datafram
 ```{r} 
 url1 <- "https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1"
 fichero <- "../data_raw/df.csv"
-sistema_operativo <- "linux" # Poner si se encuenctra en windows o linux
+sistema_operativo <- "windows" # Poner si se encuenctra en windows o linux
 # # Windows
 # # download.file(url,"../data_raw/df.csv", method="wininet")
 # # Linux
@@ -222,9 +222,14 @@ if (!file.exists("../data_raw/ncrna_NONCODE[v3.0].fasta")){
 ```
 
 ```{r warning=FALSE}
+
 if (!exists("ncrna")){
   ncrna <- read.fasta(file = "../data_raw/ncrna_NONCODE[v3.0].fasta")
 }
+
+## Windows
+
+
 ```
 
 
@@ -249,9 +254,47 @@ typeof(secuencia) # Se trata de una lista
 
 ```
 
+
+
 ## Pregunta 11.
 
 Extraer  las secuencias que empiezan con "acct". ¿Cuántas secuencias cumplen con la condición?
+
+```{r}
+
+ncrna_no_list <- scan("../data_raw/ncrna_NONCODE[v3.0].fasta",
+                      what = character(),
+                      quiet = TRUE,
+                      sep = "\n")
+
+empieza_acct <- toupper("acct") # Convertimos nuestra secuencia problema a mayúsculas
+
+## Eliminaos el primer y segundo elemento, debido a que son la presentación
+## de los header y secuencias.
+ncrna_vector_preproc <- ncrna_no_list[-c(1,2)]
+## Calculamos la longitud del vector, necesario para las condiciones
+longitud_ncrna_vector <- length(ncrna_vector_preproc)
+## Básicamente crearemos un verctor desde la posición 1, primer header hasta el último, de 2 en 2
+header <- ncrna_vector_preproc[seq(1,longitud_ncrna_vector,2)]
+length(header)
+## Lo mismo para las secuencias, que empiezan en el valor 2 del vector y van 2 a 2
+secuencia <- ncrna_vector_preproc[seq(2,longitud_ncrna_vector,2)]
+
+## Deberían ser la misma longtud ambos en ese sentido
+length(header) == length(secuencia)
+
+## Y creamos un data frame con header y secuencia
+df_ncrna <- tibble(
+    header=header,
+    secuencia=secuencia
+  )
+
+# Número de secuencias que empiezan con acct
+n_secuencias_acct <- length(grep(glue("^{empieza_acct}"),df_ncrna$secuencia))
+n_secuencias_acct
+
+```
+
 
 ```{r}
 ### Con la función system() (base) podemos correr comandos de la línea de comandos en un script de R
@@ -275,6 +318,21 @@ system(y)
 ## Pregunta 12.
 
 Extraer las secuencias que terminan con "tttttt". ¿Cuántas secuencias cumplen con la condición?
+
+```{r}
+
+## No hace falta repetir el código, pero hay que asegurarse de que tenemos el anterior 
+## trozo corrido
+
+termina_tttttt <- toupper("tttttt") # Convertimos nuestra secuencia problema a mayúsculas
+
+## Número de secuencias que terminan con tttttt. 
+## La librería glue permite agregar un string a otra con {}, a mí me parece muy útil.
+n_secuencias_tttttt <- length(grep(glue("^{termina_tttttt}"),df_ncrna$secuencia))
+n_secuencias_tttttt
+
+```
+
 
 ```{r}
 ## Necesitamos pasarlo a mayúscula

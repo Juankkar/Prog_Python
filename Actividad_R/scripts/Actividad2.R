@@ -1,7 +1,6 @@
-#/usr/bin/env Rscript
+#/usr/bin/env RScript
 
 # Actividad - Programación en R
-
 
 # Esta actividad evaluada consiste en una serie de ejercicios que debe responder dentro de los *chunks* o trozos de código disponibles después de cada pregunta. Recuerda incluir la carga de los paquetes necesarios para la ejecución del código.
 
