@@ -37,7 +37,7 @@ Descargar el archivo evaluacionR.csv e importar dicha información a un datafram
 ```{r} 
 url1 <- "https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1"
 fichero <- "../data_raw/df.csv"
-sistema_operativo <- "windows" # Poner si se encuenctra en windows o linux
+sistema_operativo <- "linux" # Poner si se encuenctra en windows o linux
 # # Windows
 # # download.file(url,"../data_raw/df.csv", method="wininet")
 # # Linux
@@ -223,12 +223,7 @@ if (!file.exists("../data_raw/ncrna_NONCODE[v3.0].fasta")){
 
 ```{r warning=FALSE}
 
-if (!exists("ncrna")){
-  ncrna <- read.fasta(file = "../data_raw/ncrna_NONCODE[v3.0].fasta")
-}
-
-## Windows
-
+ncrna <- read.fasta(file = "../data_raw/ncrna_NONCODE[v3.0].fasta")
 
 ```
 
@@ -275,23 +270,24 @@ ncrna_no_list <- scan("../data_raw/ncrna_NONCODE[v3.0].fasta",
 ncrna_vector_preproc <- ncrna_no_list[-c(1,2)]
 ## Calculamos la longitud del vector, necesario para las condiciones
 longitud_ncrna_vector <- length(ncrna_vector_preproc)
+
 ## Básicamente crearemos un vector que vaya desde la posición 1 (primer header) hasta el último, 
 ## ya que con seq() le hemos puesto que seleccione cada 2 líneas.
 header <- ncrna_vector_preproc[seq(1,longitud_ncrna_vector,2)]
-length(header)
+
 ## Lo mismo para las secuencias, pero en este caso empiezamos en el valor 2 (primera secuencia) del
 ## vector, seleccionando de nuevo 2 a 2. 
 secuencia <- ncrna_vector_preproc[seq(2,longitud_ncrna_vector,2)]
 
-## Deberían ser la misma longtud ambos en ese sentido
+## Deberían tener la misma longtud ambos en ese sentido
 length(header) == length(secuencia)
 
-## Y creamos un data frame con header y secuencia
+## Y creamos un tibble con header y secuencia como variables
 df_ncrna <- tibble(
     header=header,
     secuencia=secuencia
   )
-df_ncrna %>% head()
+df_ncrna %>% print(n=10)
 
 ```
 
