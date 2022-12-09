@@ -79,7 +79,7 @@ str(df)
 rows <- nrow(df)
 cols <- ncol(df)
 
-vector_respuesta <- c(n_row=rows, n_col=cols) 
+vector_respuesta <- c(`n Columnas`=rows, `n Filas`=cols) 
 vector_respuesta
 ```
 
@@ -132,7 +132,7 @@ A partir de los datos de **df**, mostrar mediante un gráfico de puntos la relac
 ```{r warnings=FALSE}
 
 ## Esqueleto principal de los siguienets gráifcos
-plot_6_y_5 <- df %>% 
+plot_6_y_7 <- df %>% 
   filter(Tissue == "angular gyrus (white matter)" | 
          Tissue == "angular gyrus") %>%
   mutate(Tissue=factor(Tissue,
@@ -150,7 +150,7 @@ plot_6_y_5 <- df %>%
   theme_classic() +
   theme(
     plot.title = element_text(face = "bold", size = 14, hjust = .5),
-    plot.subtitle = element_text(face = "bold", size = 14, hjust = .5),
+    plot.subtitle = element_text(face = "italic", size = 11, hjust = .5),
     axis.line=element_line(size = 1),
     axis.ticks = element_line(size = 1),
     axis.title = element_text(face = "bold", size = 12),
@@ -162,7 +162,7 @@ plot_6_y_5 <- df %>%
         )
 
 ## Gráfico de la actividad 5
-plot_6_y_5 +
+plot_6_y_7 +
   geom_point(pch=21, color="black", size=1.5) +
   labs(
         title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
@@ -178,7 +178,7 @@ plot_6_y_5 +
 Mostrar los mismos datos de la pregunta 6 usando facet_grid para separar la información de los dos tejidos en dos gráficos colocados uno al lado del otro.
 
 ```{r}
-plot_6_y_5 +
+plot_6_y_7 +
   geom_point(pch=21, color="black", size=1.5,
              show.legend = FALSE) +
   facet_grid(~Tissue, scales = "free") +
