@@ -110,8 +110,8 @@ df %>%
       labs(
         title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
         subtitle = "Autor: Juan Carlos García Estupiñán",
-        x="TPM",
-        y="nTPM"
+        x="Transcripts per million (TPM)",    # He estado buscando informacion sobre esto y creo que es a lo que se refiere con TPM
+        y="Normalize transcript per million (nTPM)"
       ) +
       theme_classic() +
       theme(
@@ -167,8 +167,8 @@ plot_6_y_7 +
   labs(
         title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
         subtitle = "Autor: Juan Carlos García Estupiñán",
-        x="TPM",
-        y="nTPM"
+        x="Transcripts per million (TPM)",
+        y="Normalize transcripts per million (nTPM)"
       ) 
 ```
 
@@ -185,8 +185,8 @@ plot_6_y_7 +
   labs(
         title = "Actividad 6 Programación R, Máster de Bioinformática VIU",
         subtitle = "Autor: Juan Carlos García Estupiñán",
-        x="TPM",
-        y="nTPM"
+        x="Transcripts per million (TPM)",
+        y="Normalize transcripts per million (nTPM)"
       ) +
   theme(
     strip.background = element_blank(),
