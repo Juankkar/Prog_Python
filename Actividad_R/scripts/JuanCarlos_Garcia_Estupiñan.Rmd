@@ -320,7 +320,7 @@ termina_tttttt <- toupper("tttttt") # Convertimos nuestra secuencia problema a m
 
 ## Número de secuencias que terminan con tttttt. 
 ## La librería glue permite agregar un string a otra con {}, a mí me parece muy útil.
-n_secuencias_tttttt <- length(grep(glue("^{termina_tttttt}"),df_ncrna$secuencia))
+n_secuencias_tttttt <- length(grep(glue("{termina_tttttt}$"),df_ncrna$secuencia))
 n_secuencias_tttttt
 
 ```
