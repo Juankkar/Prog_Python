@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # En caso de algún problema con el código, adjunto el repositorio donde lo he almacenado en mi cuenta de [GitHub](https://github.com/Juankkar/Programacion_Python_R).
 
-## Resultado en html: [Resultados]()
+## Resultado en html: [Resultados](https://github.com/Juankkar/Programacion_Python_R/tree/main/Actividad_R/Resultados)
 
 # Actividad - Programación en R
 
@@ -81,7 +81,7 @@ str(df)
 rows <- nrow(df)
 cols <- ncol(df)
 
-vector_respuesta <- c(`n Columnas`=rows, `n Filas`=cols) 
+vector_respuesta <- c(`n filas`=rows, `n columnas`=cols) 
 vector_respuesta
 ```
 
@@ -318,4 +318,3 @@ n_secuencias_tttttt <- length(grep(glue("{termina_tttttt}$"),df_ncrna$secuencia)
 n_secuencias_tttttt
 
 ```
-

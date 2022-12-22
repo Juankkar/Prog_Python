@@ -6,13 +6,13 @@ La actividad consiste en analizar unas bases de datos de origen biológico, habi
 
 Contenido del directorio: 
 
-* scripts: contiene el código usado en los análisis. 
+* [scripts](scripts): contiene el código usado en los análisis. 
     * JuanCarlos_García_Estupiñán.Rmd: script en formado R markdown.
     * JuanCarlos_García_Estipiñán.R: script en formato R script.
 
-* data_raw: datos que vamos a analizar.
+* [data_raw](data_raw): datos que vamos a analizar.
     * df.csv
-    * ncrna...
+    * ncrna_NONCODE[v3.0].fasta
 
-* Resultados: resultados obtenidos en los análisis en formato html.
+* [Resultados](Resultados): resultados obtenidos en los análisis en formato html.
     
