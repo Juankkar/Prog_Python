@@ -2,7 +2,7 @@
 
 ### Máster de Bioinformática VIU
 
-Directorios:
+* Directorios:
     
     * [code](code): jupyter notebook con los resultados de la actividad.
     
