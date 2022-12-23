@@ -10,9 +10,15 @@ Contenido del directorio:
     * JuanCarlos_García_Estupiñán.Rmd: script en formado R markdown.
     * JuanCarlos_García_Estipiñán.R: script en formato R script.
 
-* [data_raw](data_raw): datos que vamos a analizar.
-    * df.csv
-    * ncrna_NONCODE[v3.0].fasta
+* *****DATA, instrucciones.**
+
+    * Los archvos se descargarán al correr el código, pero como son muy grandes para almacenarlos en este repositorio, para obtenerlos hay que realizar lo sigiente:
+        * Crear un nuevo directorio llamado ```data_raw```. Esta ruta se encuentra en el archivo .gitignore para que no se empujen al repositorio virtual.
+        * Data Que se utilizará (al pulsar los enlaces puedes descargarlos directamente desde aquí)
+
+            * [df.csv](https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1)
+
+            * [ncrna_NONCODE[v3.0].fasta](http://noncode.org/datadownload/ncrna_NONCODE[v3.0].fasta.tar.gz)
 
 * [Resultados](Resultados): resultados obtenidos en los análisis en formato html.
     
