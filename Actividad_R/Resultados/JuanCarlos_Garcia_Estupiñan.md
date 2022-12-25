@@ -1,13 +1,7 @@
----
-title: "Actividad_R"
-author: "Juan Carlos García Estupiñán"
-date: "2022-11-28"
-output: rmarkdown::github_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+Actividad_R
+================
+Juan Carlos García Estupiñán
+2022-11-28
 
 # En caso de algún problema con el código, adjunto el repositorio donde lo he almacenado en mi cuenta de [GitHub](https://github.com/Juankkar/Programacion_Python_R).
 
@@ -15,11 +9,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Actividad - Programación en R
 
-Esta actividad evaluada consiste en una serie de ejercicios que debe responder dentro de los *chunks* o trozos de código disponibles después de cada pregunta. Recuerda incluir la carga de los paquetes necesarios para la ejecución del código.
+Esta actividad evaluada consiste en una serie de ejercicios que debe
+responder dentro de los *chunks* o trozos de código disponibles después
+de cada pregunta. Recuerda incluir la carga de los paquetes necesarios
+para la ejecución del código.
 
 ## Librerías a usar:
 
-```{r}
+``` r
 # Paquetes necesarios
 packages <- c("tidyverse", "seqinr", "glue")
 
@@ -32,13 +29,31 @@ if (any(installed_packages == FALSE)){
 invisible(lapply(packages, library, character.only = TRUE))
 ```
 
+    ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
+    ## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
+    ## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
+    ## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+    ## ✔ readr   2.1.3      ✔ forcats 0.5.2 
+    ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
+    ## 
+    ## Attaching package: 'seqinr'
+    ## 
+    ## 
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     count
+
 # Parte 1 (evaluacionR.csv)
 
 ## Pregunta 1.
 
-Descargar el archivo evaluacionR.csv e importar dicha información a un dataframe identificado como **df** usando el url que se indica en el trozo de código.
+Descargar el archivo evaluacionR.csv e importar dicha información a un
+dataframe identificado como **df** usando el url que se indica en el
+trozo de código.
 
-```{r}
+``` r
 url1 <- "https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1"
 fichero <- "../data_raw/df.csv"
 sistema_operativo <- "linux" # Poner si se encuenctra en windows o linux
@@ -57,27 +72,37 @@ if(sistema_operativo == "linux" && !file.exists(fichero)){
 }
 ```
 
-```{r}
+    ## [1] "Los datos ya estaban descargados"
+
+``` r
 # Datos
 df <- read.csv(file = "../data_raw/df.csv")
-
 ```
 
 ## Pregunta 2.
 
-¿Cuál es el tipo de cada una de las variables presentes en el dataframe **df**?
+¿Cuál es el tipo de cada una de las variables presentes en el dataframe
+**df**?
 
-```{r}
-
+``` r
 str(df)
-   
 ```
+
+    ## 'data.frame':    8192 obs. of  7 variables:
+    ##  $ X        : int  1 2 3 4 5 6 7 8 9 10 ...
+    ##  $ Gene     : chr  "ENSG00000000003" "ENSG00000000003" "ENSG00000000003" "ENSG00000000003" ...
+    ##  $ Gene.name: chr  "TSPAN6" "TSPAN6" "TSPAN6" "TSPAN6" ...
+    ##  $ Tissue   : chr  "adipose tissue" "adrenal gland" "amygdala" "angular gyrus" ...
+    ##  $ TPM      : num  21.7 18.3 4.7 3.3 3.8 4.7 3.1 3.1 3.4 4 ...
+    ##  $ pTPM     : num  25.5 22 6.4 4.7 6.1 6.3 4.1 3.5 3.8 4.5 ...
+    ##  $ nTPM     : num  20.8 14.2 6.9 5.6 5.8 6.8 6 5.7 6 6.2 ...
 
 ## Pregunta 3.
 
-¿Cuántos registros (filas) y variables (columnas) tiene el dataframe **df?**
+¿Cuántos registros (filas) y variables (columnas) tiene el dataframe
+**df?**
 
-```{r}
+``` r
 rows <- nrow(df)
 cols <- ncol(df)
 
@@ -85,24 +110,39 @@ vector_respuesta <- c(`n filas`=rows, `n columnas`=cols)
 vector_respuesta
 ```
 
+    ##    n filas n columnas 
+    ##       8192          7
+
 ## Pregunta 4.
 
-Agrupar el dataframe **df** por la variable **Tissue** y agregar columnas con la media de TPM, el valor máximo de TPM y el valor mínimo de TPM para cada tipo de Tissue. Almacenar el resultado en **df1**.
+Agrupar el dataframe **df** por la variable **Tissue** y agregar
+columnas con la media de TPM, el valor máximo de TPM y el valor mínimo
+de TPM para cada tipo de Tissue. Almacenar el resultado en **df1**.
 
-```{r}
+``` r
 df1 <- df %>%
       group_by(Tissue) %>%
       summarise(maximo=max(TPM),
                 minimo=min(TPM))
 df1 %>% head()
-
 ```
+
+    ## # A tibble: 6 × 3
+    ##   Tissue                                        maximo minimo
+    ##   <chr>                                          <dbl>  <dbl>
+    ## 1 adipose tissue                                 282.     0  
+    ## 2 adrenal gland                                  108.     0  
+    ## 3 amygdala                                       104.     0.2
+    ## 4 angular gyrus                                   94.6    0.1
+    ## 5 angular gyrus (white matter)                   151.     0  
+    ## 6 anterior cingulate cortex, supragenual-dorsal   75      0.2
 
 ## Pregunta 5.
 
-Mostrar mediante un gráfico de puntos la relación entre TPM y nTPM usando el dataframe **df**.
+Mostrar mediante un gráfico de puntos la relación entre TPM y nTPM
+usando el dataframe **df**.
 
-```{r}
+``` r
 df %>%
       ggplot(aes(TPM, nTPM)) +
       geom_point(size=1.5) +
@@ -124,12 +164,19 @@ df %>%
       )
 ```
 
+    ## Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
+    ## ℹ Please use the `linewidth` argument instead.
+
+![](JuanCarlos_Garcia_Estupiñan_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
 ## Pregunta 6.
 
-A partir de los datos de **df**, mostrar mediante un gráfico de puntos la relación entre TPM y nTPM para los registros en donde la variable Tissue sea igual a "angular gyrus (white matter)" o igual a "angular gyrus". Colorear de forma distinta dependiendo del tipo de Tissue.
+A partir de los datos de **df**, mostrar mediante un gráfico de puntos
+la relación entre TPM y nTPM para los registros en donde la variable
+Tissue sea igual a “angular gyrus (white matter)” o igual a “angular
+gyrus”. Colorear de forma distinta dependiendo del tipo de Tissue.
 
-```{r warnings=FALSE}
-
+``` r
 ## Esqueleto principal de los siguienets gráifcos
 plot_6_y_7 <- df %>% 
   filter(Tissue == "angular gyrus (white matter)" | 
@@ -159,7 +206,12 @@ plot_6_y_7 <- df %>%
     legend.position = "top",
     legend.background = element_rect(color = "black", size = .75)
         )
+```
 
+    ## Warning: The `size` argument of `element_rect()` is deprecated as of ggplot2 3.4.0.
+    ## ℹ Please use the `linewidth` argument instead.
+
+``` r
 ## Gráfico de la actividad 5
 plot_6_y_7 +
   geom_point(pch=21, color="black", size=1.5) +
@@ -171,11 +223,17 @@ plot_6_y_7 +
       ) 
 ```
 
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](JuanCarlos_Garcia_Estupiñan_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
 ## Pregunta 7.
 
-Mostrar los mismos datos de la pregunta 6 usando facet_grid para separar la información de los dos tejidos en dos gráficos colocados uno al lado del otro.
+Mostrar los mismos datos de la pregunta 6 usando facet_grid para separar
+la información de los dos tejidos en dos gráficos colocados uno al lado
+del otro.
 
-```{r}
+``` r
 plot_6_y_7 +
   geom_point(pch=21, color="black", size=1.5,
              show.legend = FALSE) +
@@ -190,17 +248,22 @@ plot_6_y_7 +
     strip.background = element_blank(),
     strip.text = element_text(color = "black", size = 12, face = "bold")
   )
-
 ```
 
-# Parte 2 (ncrna_NONCODE[v3.0].fasta)
+    ## `geom_smooth()` using formula = 'y ~ x'
+
+![](JuanCarlos_Garcia_Estupiñan_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+
+# Parte 2 (ncrna_NONCODE\[v3.0\].fasta)
 
 ## Pregunta 8.
 
-Descargar el archivo ncrna_NONCODE[v3.0].fasta e importar los datos usando el paquete seqinr visto en las prácticas de las últimas sesiones. Recuerde que el archivo se encuetra comprimido. Almacenar los datos en el objeto **ncrna**.
+Descargar el archivo ncrna_NONCODE\[v3.0\].fasta e importar los datos
+usando el paquete seqinr visto en las prácticas de las últimas sesiones.
+Recuerde que el archivo se encuetra comprimido. Almacenar los datos en
+el objeto **ncrna**.
 
-```{r warning=FALSE}
-
+``` r
 url2 <- "http://noncode.org/datadownload/ncrna_NONCODE[v3.0].fasta.tar.gz"
 
 if (!file.exists("../data_raw/ncrna_NONCODE[v3.0].fasta")){
@@ -214,42 +277,43 @@ if (!file.exists("../data_raw/ncrna_NONCODE[v3.0].fasta")){
 } else{
   print("La base de datos ya estaba descargada")
 }
-
-
 ```
 
-```{r warning=FALSE}
+    ## [1] "La base de datos ya estaba descargada"
 
+``` r
 ncrna <- read.fasta(file = "../data_raw/ncrna_NONCODE[v3.0].fasta")
-
 ```
 
 ## Pregunta 9.
 
-Revisar las funciones disponibles del paquete seqinr. Indicar qué función se puede utilizar para ver el listado y una breve descripción de las funciones incluidas en el paquete.
+Revisar las funciones disponibles del paquete seqinr. Indicar qué
+función se puede utilizar para ver el listado y una breve descripción de
+las funciones incluidas en el paquete.
 
-```{r}
-
+``` r
 library(help="seqinr")
-
 ```
 
 ## Pregunta 10.
 
-Extraer en un objeto **secuencia** todas las secuencias del objeto **ncrna** usando la función **getSequence** de seqinr. ¿de qué tipo es el objeto **secuencia**?
+Extraer en un objeto **secuencia** todas las secuencias del objeto
+**ncrna** usando la función **getSequence** de seqinr. ¿de qué tipo es
+el objeto **secuencia**?
 
-```{r}
-
+``` r
 secuencia <- getSequence(ncrna)
 typeof(secuencia) # Se trata de una lista
-
 ```
+
+    ## [1] "list"
 
 ## Pregunta 11.
 
-Extraer las secuencias que empiezan con "acct". ¿Cuántas secuencias cumplen con la condición?
+Extraer las secuencias que empiezan con “acct”. ¿Cuántas secuencias
+cumplen con la condición?
 
-```{r}
+``` r
 ## En esta ocasión vamos a usar una función llamada scan, sirve para leer data que no
 ## tiene por que ser rectangular, tiene una opción de sep que nos permite separar por líneas
 ## lo que nos hace obtener un vector en el que cada valor son estas \n. En mi caso que 
@@ -275,19 +339,37 @@ secuencia <- ncrna_vector_preproc[seq(2,longitud_ncrna_vector,2)]
 
 ## Deberían tener la misma longtud ambos en ese sentido
 length(header) == length(secuencia)
+```
 
+    ## [1] TRUE
+
+``` r
 ## Y creamos un tibble con header y secuencia como variables
 df_ncrna <- tibble(
     header=header,
     secuencia=secuencia
   )
 df_ncrna %>% print(n=10)
-
 ```
+
+    ## # A tibble: 411,552 × 2
+    ##    header                                                                secue…¹
+    ##    <chr>                                                                 <chr>  
+    ##  1 >n1 | AB002583 | tmRNA | chloroplast Cyanidioschyzon merolae | ssrA … ACCTCG…
+    ##  2 >n2 | AB002583 | RNase P RNA | chloroplast Cyanidioschyzon merolae |… AAGGCA…
+    ##  3 >n3 | AB003477 | tmRNA | Synechococcus sp | 10Sa | NONCODE v2.0 | NU… GGGGCT…
+    ##  4 >n4 | AB007644 | snoRNA | Arabidopsis thaliana (thale cress) | U3 | … ACGACC…
+    ##  5 >n5 | AB009049 | snoRNA | Arabidopsis thaliana (thale cress) | U24 |… GGCCGG…
+    ##  6 >n6 | AB009051 | snRNA | Arabidopsis thaliana (thale cress) | U6 | N… GTCCCT…
+    ##  7 >n7 | AB010698 | snRNA | Arabidopsis thaliana (thale cress) | U6 | N… GTCCCT…
+    ##  8 >n9 | AB013387 | snoRNA | Arabidopsis thaliana (thale cress) | U3 | … ACGACC…
+    ##  9 >n10 | AB013390 | snRNA | Arabidopsis thaliana (thale cress) | U2 | … ATACCT…
+    ## 10 >n11 | AB013396 | snRNA | Arabidopsis thaliana (thale cress) | U2 | … ATACCT…
+    ## # … with 411,542 more rows, and abbreviated variable name ¹​secuencia
 
 El siguiente chunk sería ya el ejercicio 11 resuelto.
 
-```{r}
+``` r
 ## Número de secuencias que empiezan con acct. glue() es una función muy útil del paquete glue que sirve
 ## para añadir el valor de una string a otra mediante el uso de {}. De esta manera, como necesitamos las
 ## bases nitrogenadas (acct) en mayúsculas, usamos la función toupper(), y luego se lo añadimos a la 
@@ -298,15 +380,16 @@ empieza_acct <- toupper("acct") # convertimos nuestra secuencia problema a mayú
 ## Número de secuencias que empiezan por acct
 n_secuencias_acct <- length(grep(glue("^{empieza_acct}"),df_ncrna$secuencia))
 n_secuencias_acct
-
 ```
+
+    ## [1] 650
 
 ## Pregunta 12.
 
-Extraer las secuencias que terminan con "tttttt". ¿Cuántas secuencias cumplen con la condición?
+Extraer las secuencias que terminan con “tttttt”. ¿Cuántas secuencias
+cumplen con la condición?
 
-```{r}
-
+``` r
 ## No hace falta repetir el código, pero hay que asegurarse de que tenemos el anterior 
 ## trozo corrido
 
@@ -316,5 +399,6 @@ termina_tttttt <- toupper("tttttt") # Convertimos nuestra secuencia problema a m
 ## La librería glue permite agregar un string a otra con {}, a mí me parece muy útil.
 n_secuencias_tttttt <- length(grep(glue("{termina_tttttt}$"),df_ncrna$secuencia))
 n_secuencias_tttttt
-
 ```
+
+    ## [1] 728
