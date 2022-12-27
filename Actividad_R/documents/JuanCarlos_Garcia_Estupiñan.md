@@ -5,7 +5,7 @@ Juan Carlos García Estupiñán
 
 # En caso de algún problema con el código, adjunto el repositorio donde lo he almacenado en mi cuenta de [GitHub](https://github.com/Juankkar/Programacion_Python_R).
 
-## Resultado en Markdown: [Resultados](https://github.com/Juankkar/Programacion_Python_R/tree/main/Actividad_R/Resultados)
+## Resultado en Markdown: [documents](https://github.com/Juankkar/Programacion_Python_R/blob/main/Actividad_R/documents)
 
 # Actividad - Programación en R
 
@@ -85,17 +85,30 @@ df <- read.csv(file = "../data_raw/df.csv")
 **df**?
 
 ``` r
-str(df)
+## Vemos los tipos de objetos
+lapply(df, typeof)
 ```
 
-    ## 'data.frame':    8192 obs. of  7 variables:
-    ##  $ X        : int  1 2 3 4 5 6 7 8 9 10 ...
-    ##  $ Gene     : chr  "ENSG00000000003" "ENSG00000000003" "ENSG00000000003" "ENSG00000000003" ...
-    ##  $ Gene.name: chr  "TSPAN6" "TSPAN6" "TSPAN6" "TSPAN6" ...
-    ##  $ Tissue   : chr  "adipose tissue" "adrenal gland" "amygdala" "angular gyrus" ...
-    ##  $ TPM      : num  21.7 18.3 4.7 3.3 3.8 4.7 3.1 3.1 3.4 4 ...
-    ##  $ pTPM     : num  25.5 22 6.4 4.7 6.1 6.3 4.1 3.5 3.8 4.5 ...
-    ##  $ nTPM     : num  20.8 14.2 6.9 5.6 5.8 6.8 6 5.7 6 6.2 ...
+    ## $X
+    ## [1] "integer"
+    ## 
+    ## $Gene
+    ## [1] "character"
+    ## 
+    ## $Gene.name
+    ## [1] "character"
+    ## 
+    ## $Tissue
+    ## [1] "character"
+    ## 
+    ## $TPM
+    ## [1] "double"
+    ## 
+    ## $pTPM
+    ## [1] "double"
+    ## 
+    ## $nTPM
+    ## [1] "double"
 
 ## Pregunta 3.
 

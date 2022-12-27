@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # En caso de algún problema con el código, adjunto el repositorio donde lo he almacenado en mi cuenta de [GitHub](https://github.com/Juankkar/Programacion_Python_R).
 
-## Resultado en Markdown: [Resultados](https://github.com/Juankkar/Programacion_Python_R/tree/main/Actividad_R/Resultados)
+## Resultado en Markdown: [documents](https://github.com/Juankkar/Programacion_Python_R/blob/main/Actividad_R/documents)
 
 # Actividad - Programación en R
 
@@ -41,7 +41,7 @@ Descargar el archivo evaluacionR.csv e importar dicha información a un datafram
 ```{r}
 url1 <- "https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1"
 fichero <- "../data_raw/df.csv"
-sistema_operativo <- "windows" # Poner si se encuenctra en windows o linux
+sistema_operativo <- "linux" # Poner si se encuenctra en windows o linux
 # # Windows
 # # download.file(url,"../data_raw/df.csv", method="wininet")
 # # Linux
