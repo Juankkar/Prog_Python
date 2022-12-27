@@ -41,7 +41,7 @@ Descargar el archivo evaluacionR.csv e importar dicha información a un datafram
 ```{r}
 url1 <- "https://www.dropbox.com/s/ms29mvjj0pdq9oz/evaluacionR.csv?dl=1"
 fichero <- "../data_raw/df.csv"
-sistema_operativo <- "linux" # Poner si se encuenctra en windows o linux
+sistema_operativo <- "windows" # Poner si se encuenctra en windows o linux
 # # Windows
 # # download.file(url,"../data_raw/df.csv", method="wininet")
 # # Linux
@@ -68,8 +68,8 @@ df <- read.csv(file = "../data_raw/df.csv")
 ¿Cuál es el tipo de cada una de las variables presentes en el dataframe **df**?
 
 ```{r}
-
-str(df)
+## Vemos los tipos de objetos
+lapply(df, typeof)
    
 ```
 
