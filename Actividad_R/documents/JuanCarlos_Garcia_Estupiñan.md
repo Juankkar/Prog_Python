@@ -391,8 +391,20 @@ El siguiente chunk sería ya el ejercicio 11 resuelto.
 empieza_acct <- toupper("acct") # convertimos nuestra secuencia problema a mayúsculas
 
 ## Número de secuencias que empiezan por acct
-n_secuencias_acct <- length(grep(glue("^{empieza_acct}"),df_ncrna$secuencia))
-n_secuencias_acct
+seq_start_acct <- grep(glue("^{empieza_acct}"),df_ncrna$secuencia, value=TRUE)
+## Vemos las 5 primeras filas que empiezan en acct:
+seq_start_acct %>% head(n=5)
+```
+
+    ## [1] "ACCTCGACCACCCTTAACTTGGGTGCAGGTATTCAACAAAAGCAATGAATCAAGGAATGAATCAATGGATTTTCAATGGATTTATGGATTTTAAAAACAGAGAACTCAGAAATCTAACAGAAATTTAACAGAAATTTAAATTTGTCGATCTACAAATTGCCCTTATCTTTTTCCATCTTAAACTAAACGTTAATAACTTATTGTTGTTGAATACAGCTTGTGGAATGTCGGGGTACAATGTCGGGG"
+    ## [2] "ACCTAGTTTTTTTAACTAAAAGTTGAGAAGGCTAGGGAACACCATTTATTTCATATTAAGATGGAAGACAAGAAATGCTGTGGTTGCAAAACCGAAACAGCTAACTGCAGTAAATGCAACTGTGGCGGTTGCAAATGCTGCCAAAAATAAGGCGAAATTTCTCTAAATTTCGTTTTAGATAAAAAGCCAGTCGTAAGACTGGTTTTTTATT"                                   
+    ## [3] "ACCTCTCAAAGCTCATAGCTTTGATCAAGTGTAGTATCTGTTCTTGTCAGTGTGACAGCTGACAAACTAGCTCCTTGGAGCTAGAATATGCTGGTGTGTGTGTGGATGCTTTGACAGGCTTGCTTGTAGGGGCCATGCACACACCAGGCAGACTCCCGGAAGTTGTTCCGTCCGGAGCTGCACTTTTT"                                                          
+    ## [4] "ACCTGCGGTGCAAAACATCATAATCTAGAAGAAACAAACTAATTTCTTCCAGATAATCTATTATGCTTTTTTTTTTTTTTTT"                                                                                                                                                                    
+    ## [5] "ACCTATCGGCAAAAAACACAAGCAGTTGTACTAACATCAAACAGATTTTTTTTTTTTTTTT"
+
+``` r
+## Vemos el total de las secuencias anteriores con length()
+n_seq_start_acct <- length(seq_start_acct); n_seq_start_acct
 ```
 
     ## [1] 650
@@ -410,8 +422,20 @@ termina_tttttt <- toupper("tttttt") # Convertimos nuestra secuencia problema a m
 
 ## Número de secuencias que terminan con tttttt. 
 ## La librería glue permite agregar un string a otra con {}, a mí me parece muy útil.
-n_secuencias_tttttt <- length(grep(glue("{termina_tttttt}$"),df_ncrna$secuencia))
-n_secuencias_tttttt
+seq__end_tttttt <- grep(glue("{termina_tttttt}$"),df_ncrna$secuencia, value=TRUE)
+## Vemos las 5 primeras líneas que terminan en tttttt:
+seq__end_tttttt %>% head(n=5)
+```
+
+    ## [1] "GTCCCTTCGGGGACATCCGATAAAATTGGAACGATACAGAGAAGATTAGCATGGCCCCTGCGCAAGGATGACACGCATAAATCGAGAAATGGTCCAAATTTTTTT"  
+    ## [2] "GTCCCTTCGGGGACATCCGATAAAATTGGAACGATACAGAGAAGATTAGCATGGCCCCTGCGCAAGGATGACACGCATAAATCGAGAAATGGTCCAAATTTTTTT"  
+    ## [3] "GTCCCTTAGGGGACATCCGATAAAATTGGAACGATACAGAGAAGATTAGCATGGCCCCTGCGCAAGGATGACACGCATAAATCGAGAAATGGTCCAAATTTTTTT"  
+    ## [4] "GTGCTTGCCTTGGTAGCGCATATACTAAAGCTGGAATGATACAGAGAAGTTTAGCATGGCCCCTGAACAAGGATGACATTCAAATTCGTGAAGCATTCCATTTTTT" 
+    ## [5] "GAGTTTGCTTCAGCAGCAAGTGTACTAAAATTAAAACAATATAGAGAAGATTAGCATGATCCCTGCACAAGTGTGACACACAAATTTGCGAAGCATTCTATTTTTTT"
+
+``` r
+## Vemos el total de secuencias anteriores con length()
+n_seq__end_tttttt <- length(seq__end_tttttt); n_seq__end_tttttt
 ```
 
     ## [1] 728
