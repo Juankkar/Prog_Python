@@ -10,7 +10,7 @@ Contenido del directorio:
     * JuanCarlos_García_Estupiñán.Rmd: script en formado R markdown.
     * JuanCarlos_García_Estipiñán.R: script en formato R script.
 
-* *****DATA, instrucciones.**
+* **DATA, instrucciones.**
 
     * Los archvos se descargarán al correr el código, pero como son muy grandes para almacenarlos en este repositorio, para obtenerlos hay que realizar lo sigiente:
         * Crear un nuevo directorio llamado ```data_raw```. Esta ruta se encuentra en el archivo .gitignore para que no se empujen al repositorio virtual.
