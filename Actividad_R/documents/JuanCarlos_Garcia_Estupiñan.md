@@ -30,9 +30,9 @@ invisible(lapply(packages, library, character.only = TRUE))
 ```
 
     ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-    ## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
+    ## ✔ ggplot2 3.4.0      ✔ purrr   1.0.0 
     ## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-    ## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
+    ## ✔ tidyr   1.2.1      ✔ stringr 1.5.0 
     ## ✔ readr   2.1.3      ✔ forcats 0.5.2 
     ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
     ## ✖ dplyr::filter() masks stats::filter()
@@ -119,12 +119,12 @@ lapply(df, typeof)
 rows <- nrow(df)
 cols <- ncol(df)
 
-vector_respuesta <- c(`n filas`=rows, `n columnas`=cols) 
+vector_respuesta <- c(nfilas=rows, ncolumnas=cols) 
 vector_respuesta
 ```
 
-    ##    n filas n columnas 
-    ##       8192          7
+    ##    nfilas ncolumnas 
+    ##      8192         7
 
 ## Pregunta 4.
 
@@ -135,20 +135,21 @@ de TPM para cada tipo de Tissue. Almacenar el resultado en **df1**.
 ``` r
 df1 <- df %>%
       group_by(Tissue) %>%
-      summarise(maximo=max(TPM),
+      summarise(media=mean(TPM),
+                maximo=max(TPM),
                 minimo=min(TPM))
 df1 %>% head()
 ```
 
-    ## # A tibble: 6 × 3
-    ##   Tissue                                        maximo minimo
-    ##   <chr>                                          <dbl>  <dbl>
-    ## 1 adipose tissue                                 282.     0  
-    ## 2 adrenal gland                                  108.     0  
-    ## 3 amygdala                                       104.     0.2
-    ## 4 angular gyrus                                   94.6    0.1
-    ## 5 angular gyrus (white matter)                   151.     0  
-    ## 6 anterior cingulate cortex, supragenual-dorsal   75      0.2
+    ## # A tibble: 6 × 4
+    ##   Tissue                                        media maximo minimo
+    ##   <chr>                                         <dbl>  <dbl>  <dbl>
+    ## 1 adipose tissue                                 34.6  282.     0  
+    ## 2 adrenal gland                                  24.8  108.     0  
+    ## 3 amygdala                                       21.3  104.     0.2
+    ## 4 angular gyrus                                  21.2   94.6    0.1
+    ## 5 angular gyrus (white matter)                   30.4  151.     0  
+    ## 6 anterior cingulate cortex, supragenual-dorsal  17.9   75      0.2
 
 ## Pregunta 5.
 
@@ -159,18 +160,16 @@ usando el dataframe **df**.
 df %>%
       ggplot(aes(TPM, nTPM)) +
       geom_point(size=1.5) +
-      # geom_smooth(method = "lm") +
       labs(
         title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
-        subtitle = "Autor: Juan Carlos García Estupiñán",
-        x="Transcripts per million (TPM)",    # He estado buscando informacion sobre esto y creo que es a lo que se refiere con TPM
-        y="Normalize transcript per million (nTPM)"
+        caption = "Autor: Juan Carlos García Estupiñán",
+        x="Transcript per million (TPM)",    # He estado buscando informacion sobre esto y creo que es a lo que se refiere con TPM
+        y="Normalized transcript per million (nTPM)"
       ) +
       theme_classic() +
       theme(
         plot.title = element_text(face = "bold", size = 14, hjust = .5),
-        plot.subtitle = element_text(face = "bold", size = 14, hjust = .5),
-        # axis.line=element_line(size = 1),
+        plot.caption = element_text(face = "italic"),
         axis.ticks = element_line(size = 1),
         axis.title = element_text(face = "bold", size = 12),
         axis.text = element_text(face = "bold", size = 11)
@@ -209,7 +208,7 @@ plot_6_y_7 <- df %>%
   theme_classic() +
   theme(
     plot.title = element_text(face = "bold", size = 14, hjust = .5),
-    plot.subtitle = element_text(face = "italic", size = 11, hjust = .5),
+    plot.caption = element_text(face = "italic"),
     axis.line=element_line(size = 1),
     axis.ticks = element_line(size = 1),
     axis.title = element_text(face = "bold", size = 12),
@@ -230,9 +229,9 @@ plot_6_y_7 +
   geom_point(pch=21, color="black", size=1.5) +
   labs(
         title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
-        subtitle = "Autor: Juan Carlos García Estupiñán",
-        x="Transcripts per million (TPM)",
-        y="Normalize transcripts per million (nTPM)"
+        caption = "Autor: Juan Carlos García Estupiñán",
+        x="Transcript per million (TPM)",
+        y="Normalized transcript per million (nTPM)"
       ) 
 ```
 
@@ -253,9 +252,9 @@ plot_6_y_7 +
   facet_grid(~Tissue, scales = "free") +
   labs(
         title = "Actividad 6 Programación R, Máster de Bioinformática VIU",
-        subtitle = "Autor: Juan Carlos García Estupiñán",
-        x="Transcripts per million (TPM)",
-        y="Normalize transcripts per million (nTPM)"
+        caption = "Autor: Juan Carlos García Estupiñán",
+        x="Transcript per million (TPM)",
+        y="Normalized transcript per million (nTPM)"
       ) +
   theme(
     strip.background = element_blank(),

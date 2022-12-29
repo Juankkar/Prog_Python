@@ -81,7 +81,7 @@ lapply(df, typeof)
 rows <- nrow(df)
 cols <- ncol(df)
 
-vector_respuesta <- c(`n filas`=rows, `n columnas`=cols) 
+vector_respuesta <- c(nfilas=rows, ncolumnas=cols) 
 vector_respuesta
 ```
 
@@ -92,7 +92,8 @@ Agrupar el dataframe **df** por la variable **Tissue** y agregar columnas con la
 ```{r}
 df1 <- df %>%
       group_by(Tissue) %>%
-      summarise(maximo=max(TPM),
+      summarise(media=mean(TPM),
+                maximo=max(TPM),
                 minimo=min(TPM))
 df1 %>% head()
 
@@ -106,18 +107,16 @@ Mostrar mediante un gráfico de puntos la relación entre TPM y nTPM usando el d
 df %>%
       ggplot(aes(TPM, nTPM)) +
       geom_point(size=1.5) +
-      # geom_smooth(method = "lm") +
       labs(
         title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
-        subtitle = "Autor: Juan Carlos García Estupiñán",
-        x="Transcripts per million (TPM)",    # He estado buscando informacion sobre esto y creo que es a lo que se refiere con TPM
-        y="Normalize transcript per million (nTPM)"
+        caption = "Autor: Juan Carlos García Estupiñán",
+        x="Transcript per million (TPM)",    # He estado buscando informacion sobre esto y creo que es a lo que se refiere con TPM
+        y="Normalized transcript per million (nTPM)"
       ) +
       theme_classic() +
       theme(
         plot.title = element_text(face = "bold", size = 14, hjust = .5),
-        plot.subtitle = element_text(face = "bold", size = 14, hjust = .5),
-        # axis.line=element_line(size = 1),
+        plot.caption = element_text(face = "italic"),
         axis.ticks = element_line(size = 1),
         axis.title = element_text(face = "bold", size = 12),
         axis.text = element_text(face = "bold", size = 11)
@@ -149,7 +148,7 @@ plot_6_y_7 <- df %>%
   theme_classic() +
   theme(
     plot.title = element_text(face = "bold", size = 14, hjust = .5),
-    plot.subtitle = element_text(face = "italic", size = 11, hjust = .5),
+    plot.caption = element_text(face = "italic"),
     axis.line=element_line(size = 1),
     axis.ticks = element_line(size = 1),
     axis.title = element_text(face = "bold", size = 12),
@@ -165,9 +164,9 @@ plot_6_y_7 +
   geom_point(pch=21, color="black", size=1.5) +
   labs(
         title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
-        subtitle = "Autor: Juan Carlos García Estupiñán",
-        x="Transcripts per million (TPM)",
-        y="Normalize transcripts per million (nTPM)"
+        caption = "Autor: Juan Carlos García Estupiñán",
+        x="Transcript per million (TPM)",
+        y="Normalized transcript per million (nTPM)"
       ) 
 ```
 
@@ -182,9 +181,9 @@ plot_6_y_7 +
   facet_grid(~Tissue, scales = "free") +
   labs(
         title = "Actividad 6 Programación R, Máster de Bioinformática VIU",
-        subtitle = "Autor: Juan Carlos García Estupiñán",
-        x="Transcripts per million (TPM)",
-        y="Normalize transcripts per million (nTPM)"
+        caption = "Autor: Juan Carlos García Estupiñán",
+        x="Transcript per million (TPM)",
+        y="Normalized transcript per million (nTPM)"
       ) +
   theme(
     strip.background = element_blank(),
