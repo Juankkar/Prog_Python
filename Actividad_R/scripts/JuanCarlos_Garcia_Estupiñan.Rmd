@@ -223,6 +223,10 @@ ncrna <- read.fasta(file = "../data_raw/ncrna_NONCODE[v3.0].fasta")
 
 ```
 
+```{r}
+str_c()
+```
+
 ## Pregunta 9.
 
 Revisar las funciones disponibles del paquete seqinr. Indicar qué función se puede utilizar para ver el listado y una breve descripción de las funciones incluidas en el paquete.
@@ -237,7 +241,7 @@ library(help="seqinr")
 
 Extraer en un objeto **secuencia** todas las secuencias del objeto **ncrna** usando la función **getSequence** de seqinr. ¿de qué tipo es el objeto **secuencia**?
 
-```{r}
+```{r warning=FALSE}
 
 secuencia <- getSequence(ncrna)
 typeof(secuencia) # Se trata de una lista
@@ -252,7 +256,8 @@ Extraer las secuencias que empiezan con "acct". ¿Cuántas secuencias cumplen co
 ## En esta ocasión vamos a usar una función llamada scan, sirve para leer data que no
 ## tiene por que ser rectangular, tiene una opción de sep que nos permite separar por líneas
 ## lo que nos hace obtener un vector en el que cada valor son estas \n. En mi caso que 
-## estoy más acostumbrado a usar vectores antes que listas me facilita el trabajo.
+## estoy más acostumbrado a usar vectores y df antes que listas me facilita el trabajo. 
+## Además a mi ordenador le cuesta trabajar con listas tan largas
 ncrna_no_list <- scan("../data_raw/ncrna_NONCODE[v3.0].fasta",
                       what = character(),
                       quiet = TRUE,
@@ -275,7 +280,7 @@ secuencia <- ncrna_vector_preproc[seq(2,longitud_ncrna_vector,2)]
 ## Deberían tener la misma longtud ambos en ese sentido
 length(header) == length(secuencia)
 
-## Y creamos un tibble con header y secuencia como variables
+## Y creamos un tibble con header como columna 1 y secuencia como columna 2 
 df_ncrna <- tibble(
     header=header,
     secuencia=secuencia
@@ -308,14 +313,10 @@ n_seq_start_acct <- length(seq_start_acct); n_seq_start_acct
 Extraer las secuencias que terminan con "tttttt". ¿Cuántas secuencias cumplen con la condición?
 
 ```{r}
-
-## No hace falta repetir el código, pero hay que asegurarse de que tenemos el anterior 
-## trozo corrido
-
-termina_tttttt <- toupper("tttttt") # Convertimos nuestra secuencia problema a mayúsculas
+## Mismo procedimiento que el ejercicio anterior a partir de df_ncrna
+termina_tttttt <- toupper("tttttt") 
 
 ## Número de secuencias que terminan con tttttt. 
-## La librería glue permite agregar un string a otra con {}, a mí me parece muy útil.
 seq_end_tttttt <- grep(glue("{termina_tttttt}$"),df_ncrna$secuencia, value=TRUE)
 ## Vemos las 5 primeras líneas que terminan en tttttt:
 seq_end_tttttt %>% head(n=5)
