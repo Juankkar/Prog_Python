@@ -161,23 +161,21 @@ df %>%
       ggplot(aes(TPM, nTPM)) +
       geom_point(size=1.5) +
       labs(
-        title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
-        caption = "Autor: Juan Carlos García Estupiñán",
+        title = "Comparison between TPM and nTPM, all tissues",
+        caption = "Author: Juan Carlos García Estupiñán",
         x="Transcript per million (TPM)",    # He estado buscando informacion sobre esto y creo que es a lo que se refiere con TPM
         y="Normalized transcript per million (nTPM)"
       ) +
       theme_classic() +
       theme(
-        plot.title = element_text(face = "bold", size = 14, hjust = .5),
+        plot.title = element_text(face = "bold", size = 14, 
+                                  hjust = .5, margin = margin(b = 10)),
         plot.caption = element_text(face = "italic"),
         axis.ticks = element_line(size = 1),
         axis.title = element_text(face = "bold", size = 12),
-        axis.text = element_text(face = "bold", size = 11)
+        axis.text = element_text(face = "bold", size = 11, color="black")
       )
 ```
-
-    ## Warning: The `size` argument of `element_line()` is deprecated as of ggplot2 3.4.0.
-    ## ℹ Please use the `linewidth` argument instead.
 
 ![](JuanCarlos_Garcia_Estupiñan_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
@@ -207,12 +205,13 @@ plot_6_y_7 <- df %>%
                          values=c("red", "blue")) +
   theme_classic() +
   theme(
-    plot.title = element_text(face = "bold", size = 14, hjust = .5),
+    plot.title = element_text(face = "bold", size = 14, hjust = .5,
+                              margin = margin(b = 10)),
     plot.caption = element_text(face = "italic"),
     axis.line=element_line(size = 1),
     axis.ticks = element_line(size = 1),
     axis.title = element_text(face = "bold", size = 12),
-    axis.text = element_text(face = "bold", size = 11),
+    axis.text = element_text(face = "bold", size = 11, color="black"),
     legend.title = element_text(face="bold",size = 10,hjust = .5),
     legend.text = element_text(size = 10, hjust = .5),
     legend.position = "top",
@@ -228,7 +227,7 @@ plot_6_y_7 <- df %>%
 plot_6_y_7 +
   geom_point(pch=21, color="black", size=1.5) +
   labs(
-        title = "Actividad 5 Programación R, Máster de Bioinformática VIU",
+        title = "Comparison between TPM and nTPM (angular gyrus)",
         caption = "Autor: Juan Carlos García Estupiñán",
         x="Transcript per million (TPM)",
         y="Normalized transcript per million (nTPM)"
@@ -251,7 +250,7 @@ plot_6_y_7 +
              show.legend = FALSE) +
   facet_grid(~Tissue, scales = "free") +
   labs(
-        title = "Actividad 6 Programación R, Máster de Bioinformática VIU",
+        title = "Comparison between TPM and nTPM (angular gyrus)",
         caption = "Autor: Juan Carlos García Estupiñán",
         x="Transcript per million (TPM)",
         y="Normalized transcript per million (nTPM)"
@@ -329,7 +328,8 @@ cumplen con la condición?
 ## En esta ocasión vamos a usar una función llamada scan, sirve para leer data que no
 ## tiene por que ser rectangular, tiene una opción de sep que nos permite separar por líneas
 ## lo que nos hace obtener un vector en el que cada valor son estas \n. En mi caso que 
-## estoy más acostumbrado a usar vectores antes que listas me facilita el trabajo.
+## estoy más acostumbrado a usar vectores y df antes que listas me facilita el trabajo. 
+## Además a mi ordenador le cuesta trabajar con listas tan largas, con vectores es más rápido.
 ncrna_no_list <- scan("../data_raw/ncrna_NONCODE[v3.0].fasta",
                       what = character(),
                       quiet = TRUE,
@@ -337,73 +337,74 @@ ncrna_no_list <- scan("../data_raw/ncrna_NONCODE[v3.0].fasta",
 
 ## Eliminaos el primer y segundo elemento, debido a que son la presentación
 ## de los header y secuencias, no estos en sí.
-ncrna_vector_preproc <- ncrna_no_list[-c(1,2)]
+ncrna_vect_preprocesado <- ncrna_no_list[-c(1,2)]
 ## Calculamos la longitud del vector, necesario para las condiciones
-longitud_ncrna_vector <- length(ncrna_vector_preproc)
+longitud_ncrna_vector <- length(ncrna_vect_preprocesado)
 
 ## Básicamente crearemos un vector que vaya desde la posición 1 (primer header) hasta el último, 
 ## ya que con seq() le hemos puesto que seleccione cada 2 líneas.
-header <- ncrna_vector_preproc[seq(1,longitud_ncrna_vector,2)]
+headers <- ncrna_vect_preprocesado[seq(1,longitud_ncrna_vector,2)]
 
 ## Lo mismo para las secuencias, pero en este caso empiezamos en el valor 2 (primera secuencia) del
 ## vector, seleccionando de nuevo 2 a 2. 
-secuencia <- ncrna_vector_preproc[seq(2,longitud_ncrna_vector,2)]
+secuencias <- ncrna_vect_preprocesado[seq(2,longitud_ncrna_vector,2)]
 
 ## Deberían tener la misma longtud ambos en ese sentido
-length(header) == length(secuencia)
+length(headers) == length(secuencias)
 ```
 
     ## [1] TRUE
 
 ``` r
-## Y creamos un tibble con header y secuencia como variables
+## Y creamos un tibble con header como columna 1 (podríamos incluso partir este campo en varios)
+## y secuencia como columna 2 
 df_ncrna <- tibble(
-    header=header,
-    secuencia=secuencia
+    headers=headers,
+    secuencias=secuencias
+  ) %>%
+  mutate(
+    ## Vamos a convertir las secuencias en minúsculas
+    secuencias=tolower(secuencias)
   )
 df_ncrna %>% print(n=10)
 ```
 
     ## # A tibble: 411,552 × 2
-    ##    header                                                                secue…¹
+    ##    headers                                                               secue…¹
     ##    <chr>                                                                 <chr>  
-    ##  1 >n1 | AB002583 | tmRNA | chloroplast Cyanidioschyzon merolae | ssrA … ACCTCG…
-    ##  2 >n2 | AB002583 | RNase P RNA | chloroplast Cyanidioschyzon merolae |… AAGGCA…
-    ##  3 >n3 | AB003477 | tmRNA | Synechococcus sp | 10Sa | NONCODE v2.0 | NU… GGGGCT…
-    ##  4 >n4 | AB007644 | snoRNA | Arabidopsis thaliana (thale cress) | U3 | … ACGACC…
-    ##  5 >n5 | AB009049 | snoRNA | Arabidopsis thaliana (thale cress) | U24 |… GGCCGG…
-    ##  6 >n6 | AB009051 | snRNA | Arabidopsis thaliana (thale cress) | U6 | N… GTCCCT…
-    ##  7 >n7 | AB010698 | snRNA | Arabidopsis thaliana (thale cress) | U6 | N… GTCCCT…
-    ##  8 >n9 | AB013387 | snoRNA | Arabidopsis thaliana (thale cress) | U3 | … ACGACC…
-    ##  9 >n10 | AB013390 | snRNA | Arabidopsis thaliana (thale cress) | U2 | … ATACCT…
-    ## 10 >n11 | AB013396 | snRNA | Arabidopsis thaliana (thale cress) | U2 | … ATACCT…
-    ## # … with 411,542 more rows, and abbreviated variable name ¹​secuencia
+    ##  1 >n1 | AB002583 | tmRNA | chloroplast Cyanidioschyzon merolae | ssrA … acctcg…
+    ##  2 >n2 | AB002583 | RNase P RNA | chloroplast Cyanidioschyzon merolae |… aaggca…
+    ##  3 >n3 | AB003477 | tmRNA | Synechococcus sp | 10Sa | NONCODE v2.0 | NU… ggggct…
+    ##  4 >n4 | AB007644 | snoRNA | Arabidopsis thaliana (thale cress) | U3 | … acgacc…
+    ##  5 >n5 | AB009049 | snoRNA | Arabidopsis thaliana (thale cress) | U24 |… ggccgg…
+    ##  6 >n6 | AB009051 | snRNA | Arabidopsis thaliana (thale cress) | U6 | N… gtccct…
+    ##  7 >n7 | AB010698 | snRNA | Arabidopsis thaliana (thale cress) | U6 | N… gtccct…
+    ##  8 >n9 | AB013387 | snoRNA | Arabidopsis thaliana (thale cress) | U3 | … acgacc…
+    ##  9 >n10 | AB013390 | snRNA | Arabidopsis thaliana (thale cress) | U2 | … atacct…
+    ## 10 >n11 | AB013396 | snRNA | Arabidopsis thaliana (thale cress) | U2 | … atacct…
+    ## # … with 411,542 more rows, and abbreviated variable name ¹​secuencias
 
 El siguiente chunk sería ya el ejercicio 11 resuelto.
 
 ``` r
-## Número de secuencias que empiezan con acct. glue() es una función muy útil del paquete glue que sirve
-## para añadir el valor de una string a otra mediante el uso de {}. De esta manera, como necesitamos las
-## bases nitrogenadas (acct) en mayúsculas, usamos la función toupper(), y luego se lo añadimos a la 
-## condición de grep.
-
-empieza_acct <- toupper("acct") # convertimos nuestra secuencia problema a mayúsculas
-
-## Número de secuencias que empiezan por acct
-seq_start_acct <- grep(glue("^{empieza_acct}"),df_ncrna$secuencia, value=TRUE)
+## Filtramos las secuencias que empiezan por acct
+seq_start_acct <- df_ncrna %>% filter(str_detect(secuencias, "^acct"))
 ## Vemos las 5 primeras filas que empiezan en acct:
-seq_start_acct %>% head(n=5)
+seq_start_acct %>% select(secuencias) %>% head(n=5)
 ```
 
-    ## [1] "ACCTCGACCACCCTTAACTTGGGTGCAGGTATTCAACAAAAGCAATGAATCAAGGAATGAATCAATGGATTTTCAATGGATTTATGGATTTTAAAAACAGAGAACTCAGAAATCTAACAGAAATTTAACAGAAATTTAAATTTGTCGATCTACAAATTGCCCTTATCTTTTTCCATCTTAAACTAAACGTTAATAACTTATTGTTGTTGAATACAGCTTGTGGAATGTCGGGGTACAATGTCGGGG"
-    ## [2] "ACCTAGTTTTTTTAACTAAAAGTTGAGAAGGCTAGGGAACACCATTTATTTCATATTAAGATGGAAGACAAGAAATGCTGTGGTTGCAAAACCGAAACAGCTAACTGCAGTAAATGCAACTGTGGCGGTTGCAAATGCTGCCAAAAATAAGGCGAAATTTCTCTAAATTTCGTTTTAGATAAAAAGCCAGTCGTAAGACTGGTTTTTTATT"                                   
-    ## [3] "ACCTCTCAAAGCTCATAGCTTTGATCAAGTGTAGTATCTGTTCTTGTCAGTGTGACAGCTGACAAACTAGCTCCTTGGAGCTAGAATATGCTGGTGTGTGTGTGGATGCTTTGACAGGCTTGCTTGTAGGGGCCATGCACACACCAGGCAGACTCCCGGAAGTTGTTCCGTCCGGAGCTGCACTTTTT"                                                          
-    ## [4] "ACCTGCGGTGCAAAACATCATAATCTAGAAGAAACAAACTAATTTCTTCCAGATAATCTATTATGCTTTTTTTTTTTTTTTT"                                                                                                                                                                    
-    ## [5] "ACCTATCGGCAAAAAACACAAGCAGTTGTACTAACATCAAACAGATTTTTTTTTTTTTTTT"
+    ## # A tibble: 5 × 1
+    ##   secuencias                                                                    
+    ##   <chr>                                                                         
+    ## 1 acctcgaccacccttaacttgggtgcaggtattcaacaaaagcaatgaatcaaggaatgaatcaatggattttcaat…
+    ## 2 acctagtttttttaactaaaagttgagaaggctagggaacaccatttatttcatattaagatggaagacaagaaatg…
+    ## 3 acctctcaaagctcatagctttgatcaagtgtagtatctgttcttgtcagtgtgacagctgacaaactagctccttg…
+    ## 4 acctgcggtgcaaaacatcataatctagaagaaacaaactaatttcttccagataatctattatgcttttttttttt…
+    ## 5 acctatcggcaaaaaacacaagcagttgtactaacatcaaacagatttttttttttttttt
 
 ``` r
 ## Vemos el total de las secuencias anteriores con length()
-n_seq_start_acct <- length(seq_start_acct); n_seq_start_acct
+nrow(seq_start_acct) ## Se podría usar length(seq_start_acct$secuencia) también
 ```
 
     ## [1] 650
@@ -414,27 +415,24 @@ Extraer las secuencias que terminan con “tttttt”. ¿Cuántas secuencias
 cumplen con la condición?
 
 ``` r
-## No hace falta repetir el código, pero hay que asegurarse de que tenemos el anterior 
-## trozo corrido
-
-termina_tttttt <- toupper("tttttt") # Convertimos nuestra secuencia problema a mayúsculas
-
-## Número de secuencias que terminan con tttttt. 
-## La librería glue permite agregar un string a otra con {}, a mí me parece muy útil.
-seq_end_tttttt <- grep(glue("{termina_tttttt}$"),df_ncrna$secuencia, value=TRUE)
-## Vemos las 5 primeras líneas que terminan en tttttt:
-seq_end_tttttt %>% head(n=5)
+## Filtramos las secuencias que terminan por tttttt
+seq_end_tttttt <- df_ncrna %>% filter(str_detect(secuencias, "tttttt$"))
+## Vemos las 5 primeras filas que terminan en tttttt:
+seq_end_tttttt %>% select(secuencias) %>% head(n=5)
 ```
 
-    ## [1] "GTCCCTTCGGGGACATCCGATAAAATTGGAACGATACAGAGAAGATTAGCATGGCCCCTGCGCAAGGATGACACGCATAAATCGAGAAATGGTCCAAATTTTTTT"  
-    ## [2] "GTCCCTTCGGGGACATCCGATAAAATTGGAACGATACAGAGAAGATTAGCATGGCCCCTGCGCAAGGATGACACGCATAAATCGAGAAATGGTCCAAATTTTTTT"  
-    ## [3] "GTCCCTTAGGGGACATCCGATAAAATTGGAACGATACAGAGAAGATTAGCATGGCCCCTGCGCAAGGATGACACGCATAAATCGAGAAATGGTCCAAATTTTTTT"  
-    ## [4] "GTGCTTGCCTTGGTAGCGCATATACTAAAGCTGGAATGATACAGAGAAGTTTAGCATGGCCCCTGAACAAGGATGACATTCAAATTCGTGAAGCATTCCATTTTTT" 
-    ## [5] "GAGTTTGCTTCAGCAGCAAGTGTACTAAAATTAAAACAATATAGAGAAGATTAGCATGATCCCTGCACAAGTGTGACACACAAATTTGCGAAGCATTCTATTTTTTT"
+    ## # A tibble: 5 × 1
+    ##   secuencias                                                                    
+    ##   <chr>                                                                         
+    ## 1 gtcccttcggggacatccgataaaattggaacgatacagagaagattagcatggcccctgcgcaaggatgacacgca…
+    ## 2 gtcccttcggggacatccgataaaattggaacgatacagagaagattagcatggcccctgcgcaaggatgacacgca…
+    ## 3 gtcccttaggggacatccgataaaattggaacgatacagagaagattagcatggcccctgcgcaaggatgacacgca…
+    ## 4 gtgcttgccttggtagcgcatatactaaagctggaatgatacagagaagtttagcatggcccctgaacaaggatgac…
+    ## 5 gagtttgcttcagcagcaagtgtactaaaattaaaacaatatagagaagattagcatgatccctgcacaagtgtgac…
 
 ``` r
-## Vemos el total de secuencias anteriores con length()
-n_seq_end_tttttt <- length(seq_end_tttttt); n_seq_end_tttttt
+## Vemos el total de las secuencias anteriores del df
+nrow(seq_end_tttttt) 
 ```
 
     ## [1] 728
