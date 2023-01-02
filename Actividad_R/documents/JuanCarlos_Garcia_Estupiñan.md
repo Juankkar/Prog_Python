@@ -18,7 +18,7 @@ para la ejecución del código.
 
 ``` r
 # Paquetes necesarios
-packages <- c("tidyverse", "seqinr", "glue")
+packages <- c("tidyverse", "seqinr")
 
 # Instalamos los paquetes 
 installed_packages <- packages %in% rownames(installed.packages())

@@ -21,7 +21,7 @@ Esta actividad evaluada consiste en una serie de ejercicios que debe responder d
 
 ```{r}
 # Paquetes necesarios
-packages <- c("tidyverse", "seqinr", "glue")
+packages <- c("tidyverse", "seqinr")
 
 # Instalamos los paquetes 
 installed_packages <- packages %in% rownames(installed.packages())
