@@ -330,14 +330,14 @@ cumplen con la condición?
 ## lo que nos hace obtener un vector en el que cada valor son estas \n. En mi caso que 
 ## estoy más acostumbrado a usar vectores y df antes que listas me facilita el trabajo. 
 ## Además a mi ordenador le cuesta trabajar con listas tan largas, con vectores es más rápido.
-ncrna_no_list <- scan("../data_raw/ncrna_NONCODE[v3.0].fasta",
+ncrna_vector <- scan("../data_raw/ncrna_NONCODE[v3.0].fasta",
                       what = character(),
                       quiet = TRUE,
                       sep = "\n")
 
-## Eliminaos el primer y segundo elemento, debido a que son la presentación
-## de los header y secuencias, no estos en sí.
-ncrna_vect_preprocesado <- ncrna_no_list[-c(1,2)]
+## Eliminamos el primer y segundo elemento, debido a que son la presentación
+## de los headers y secuencias, no estos en sí.
+ncrna_vect_preprocesado <- ncrna_vector[-c(1,2)]
 ## Calculamos la longitud del vector, necesario para las condiciones
 longitud_ncrna_vector <- length(ncrna_vect_preprocesado)
 
@@ -349,15 +349,15 @@ headers <- ncrna_vect_preprocesado[seq(1,longitud_ncrna_vector,2)]
 ## vector, seleccionando de nuevo 2 a 2. 
 secuencias <- ncrna_vect_preprocesado[seq(2,longitud_ncrna_vector,2)]
 
-## Deberían tener la misma longtud ambos en ese sentido
+## Deberían tener la misma longitud ambos en ese sentido
 length(headers) == length(secuencias)
 ```
 
     ## [1] TRUE
 
 ``` r
-## Y creamos un tibble con header como columna 1 (podríamos incluso partir este campo en varios)
-## y secuencia como columna 2 
+## Y creamos un tibble con headers como columna 1 (podríamos incluso partir este campo en varios)
+## y secuencias como columna 2 
 df_ncrna <- tibble(
     headers=headers,
     secuencias=secuencias
@@ -403,7 +403,7 @@ seq_start_acct %>% select(secuencias) %>% head(n=5)
     ## 5 acctatcggcaaaaaacacaagcagttgtactaacatcaaacagatttttttttttttttt
 
 ``` r
-## Vemos el total de las secuencias anteriores con length()
+## Vemos el total de las secuencias anteriores
 nrow(seq_start_acct) ## Se podría usar length(seq_start_acct$secuencia) también
 ```
 
